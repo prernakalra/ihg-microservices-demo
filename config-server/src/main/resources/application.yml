@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    config:
+       server:
+          git:
+            default-label: master
+            uri: https://bitbucket.org/ctsihg/configproperties.git
+            clone-on-start: true
+            username: sundaravadivelchandran
+            password: Karthik1 
+            skipSslValidation: true 
+
+  
