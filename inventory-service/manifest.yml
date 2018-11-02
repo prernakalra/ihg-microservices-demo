@@ -1,0 +1,6 @@
+applications:
+- name: hotelinventory
+  memory: 1G
+  instances: 1
+  path: ./target/inventory-service-0.0.1.jar
+  buildpack: java_buildpack_offline

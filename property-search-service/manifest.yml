@@ -1,0 +1,11 @@
+applications:
+- name: propertysearch
+  memory: 512M
+  instances: 1
+  path: ./target/property-search-service-0.0.1.jar
+  buildpack: java_buildpack_offline
+  services:
+            - autoscale
+            - newrelic
+            - circuitbreaker
+           

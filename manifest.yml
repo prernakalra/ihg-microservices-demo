@@ -1,0 +1,33 @@
+applications:
+- name: hoteldetails
+  memory: 1G
+  disk_quota: 2G
+  instances: 1
+  path: ./hotel-details-service/target/hotel-details-service-0.0.1.jar
+  buildpack: java_buildpack_offline
+- name: hotelinventory
+  memory: 1G
+  disk_quota: 2G
+  instances: 1
+  path: ./inventory-service/target/inventory-service-0.0.1.jar
+  buildpack: java_buildpack_offline
+- name: hotelprice
+  memory: 1G
+  disk_quota: 2G
+  instances: 1
+  path: ./price-service/target/price-service-0.0.1.jar
+  buildpack: java_buildpack_offline
+- name: propertysearch
+  memory: 2G
+  instances: 1
+  path: ./property-search-service/target/property-search-service-0.0.1.jar
+  buildpack: java_buildpack_offline  
+  services:
+            - autoscale
+            - circuitbreaker
+            - newrelic
+- name: configserver
+  memory: 756M
+  instances: 1
+  path: ./config-server/target/config-server-0.0.1-SNAPSHOT.jar
+  buildpack: java_buildpack_offline

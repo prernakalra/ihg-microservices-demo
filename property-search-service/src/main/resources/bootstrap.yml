@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: propertysearch
+  cloud:
+     config:
+        uri:  https://configserver.app.dev.digifabricpcf.com

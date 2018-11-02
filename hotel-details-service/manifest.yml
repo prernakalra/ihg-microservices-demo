@@ -1,0 +1,6 @@
+applications:
+- name: hoteldetails
+  memory: 1G
+  instances: 1
+  path: ./target/hotel-details-service-0.0.1.jar
+  buildpack: java_buildpack_offline

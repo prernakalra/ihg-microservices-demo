@@ -1,0 +1,89 @@
+node('master') {
+    currentBuild.result="SUCCESS"
+     def server = Artifactory.server 'JFrog'
+    try {
+        stage ('Check-Out'){
+            sh 'pwd'
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '3a22a56c-a9fa-4ec7-885e-88085f535991', url: 'https://smetal1@bitbucket.org/ctsihg/ihg-microservices-demo.git']]])
+        }
+        stage ('SonarQube'){
+            withSonarQubeEnv('SonarQube'){
+                sh 'mvn clean package sonar:sonar'
+            }
+        }
+
+        stage ('Artifactory-Push'){
+           
+            def uploadSpec = """{
+                            "files": [
+                             {
+                                "pattern": "../../../hotel-details-service/target/*.jar",
+                                "target": "lsb-release/"
+                             },
+                             {
+                                 "pattern": "../../../inventory-service/target/*.jar",
+                                "target": "lsb-release/"
+                             },
+                             {
+                                 "pattern": "../../../price-service/target/*.jar",
+                                "target": "lsb-release/"
+                             },
+                              {
+                                 "pattern": "../../../property-search-service/target/*.jar",
+                                "target": "lsb-release/"
+                             },
+                             {
+                                 "pattern": "../../../config-server/target/*.jar",
+                                "target": "lsb-release/"
+                             }
+                             
+                            ]
+                            }"""
+            server.upload(uploadSpec)
+
+        }
+        stage('Artifactory-Pull'){
+            def downloadSpec = """{
+            "files": [
+                         {
+                            "pattern": "lsb-release/config-server-0.0.1-SNAPSHOT.jar",
+                            "target": "../../../config-server/target/"
+                        },
+                        {
+                        
+                            "pattern": "lsb-release/hotel-details-service-0.0.1.jar",
+                            "target": "../../../hotel-details-service/target/"
+                        },
+                          {
+                        
+                            "pattern": "lsb-release/inventory-service-0.0.1.jar",
+                            "target": "../../../inventory-service/target/"
+                        },
+                        {
+                        
+                            "pattern": "lsb-release/price-service-0.0.1.jar",
+                            "target": "../../../price-service/target/"
+                        },
+                         {
+                        
+                            "pattern": "lsb-release/property-search-service-0.0.1.jar",
+                            "target": "../../../property-search-service/target/"
+                        }
+                    ]
+            }"""
+            server.download(downloadSpec)
+            
+        }
+        stage('OpenShift-Deployment'){
+          
+          sh 'chmod +x ./deployment/openshift/openshift-rollout/openshift-rollout.sh'
+            sh 'chmod +x ./deployment/openshift/openshift-rollout/docker.sh'
+            sh './deployment/openshift/openshift-rollout/docker.sh'
+            sh './deployment/openshift/openshift-rollout/openshift-rollout.sh'
+        }
+       
+    } catch(err){
+        currentBuild.result = "FAILURE"
+        throw err
+    }
+}
