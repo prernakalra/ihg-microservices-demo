@@ -4,8 +4,9 @@ node('master') {
      def mvnHome
     try {
         stage ('Check-Out'){
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'c446dbc9-89ef-4646-aaf1-4f1101057d2f', url: 'https://github.com/prernakalra/ihg-microservices-demo.git']]])
             //slackSend color: '#4171f4', message: 'Deployment started on Pivotal Cloud Foundry '
-            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '3a22a56c-a9fa-4ec7-885e-88085f535991', url: 'https://smetal1@bitbucket.org/ctsihg/ihg-microservices-demo']]])
+            //checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '3a22a56c-a9fa-4ec7-885e-88085f535991', url: 'https://smetal1@bitbucket.org/ctsihg/ihg-microservices-demo']]])
         }
         //stage ('SonarQube'){
          //   withSonarQubeEnv('SonarQube'){
