@@ -13,17 +13,19 @@ node('master') {
             //}
         //}
 
-  
+        stage('Build'){
+            bat label: '', script: 'mvn clean install'
+        }
         
           
             
            
         }
-        stage('PCF_Deployment'){
+        /*stage('PCF_Deployment'){
             sh 'chmod +x cf_deployment.sh'
             sh './cf_deployment.sh'
            // slackSend color: '#42f44e', message: "Deployment Successfull on Pivotal Cloud Foundry!! Details: '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})  Visit: <https://ihgdemo.app.dev.digifabricpcf.com/|IHG Dashboard>"
-        }
+        }*/
  
 
 
