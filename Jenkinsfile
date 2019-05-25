@@ -20,7 +20,7 @@ node('master') {
           
             
            
-        }
+        
         /*stage('PCF_Deployment'){
             sh 'chmod +x cf_deployment.sh'
             sh './cf_deployment.sh'
